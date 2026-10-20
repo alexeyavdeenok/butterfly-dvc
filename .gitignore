@@ -1,0 +1,6 @@
+.venv/
+.venv-metal/
+__pycache__/
+*.py[cod]
+.DS_Store
+.ipynb_checkpoints/
