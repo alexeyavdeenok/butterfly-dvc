@@ -1,0 +1,58 @@
+
+stages:
+  train_cnn:
+    cmd: >-
+      python src/train.py
+      --model cnn
+      --config params/experiments.yaml
+      --run-name cnn_baseline
+    deps:
+      - src/train.py
+      - src/models.py
+      - src/image_dataset.py
+      - data/processed/manifest.csv
+    params:
+      - params/experiments.yaml
+    outs:
+      - models/cnn_baseline/best.keras
+    metrics:
+      - reports/experiments/cnn_baseline/metrics.json:
+          cache: false
+
+  train_mobilenetv2:
+    cmd: >-
+      python src/train.py
+      --model mobilenetv2
+      --config params/experiments.yaml
+      --run-name mobilenetv2_baseline
+    deps:
+      - src/train.py
+      - src/models.py
+      - src/image_dataset.py
+      - data/processed/manifest.csv
+    params:
+      - params/experiments.yaml
+    outs:
+      - models/mobilenetv2_baseline/best.keras
+    metrics:
+      - reports/experiments/mobilenetv2_baseline/metrics.json:
+          cache: false
+
+  train_efficientnetb0:
+    cmd: >-
+      python src/train.py
+      --model efficientnetb0
+      --config params/experiments.yaml
+      --run-name efficientnetb0_baseline
+    deps:
+      - src/train.py
+      - src/models.py
+      - src/image_dataset.py
+      - data/processed/manifest.csv
+    params:
+      - params/experiments.yaml
+    outs:
+      - models/efficientnetb0_baseline/best.keras
+    metrics:
+      - reports/experiments/efficientnetb0_baseline/metrics.json:
+          cache: false
