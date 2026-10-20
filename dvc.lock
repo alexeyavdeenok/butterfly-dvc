@@ -159,3 +159,195 @@ stages:
       hash: md5
       md5: 5e28affa0f7ceb88891cc7b0c026b5ae
       size: 3069
+  augment_data:
+    cmd: python src/augment_data.py --manifest data/processed/manifest.csv 
+      --output-dir data/augmented
+    deps:
+    - path: data/processed/manifest.csv
+      hash: md5
+      md5: c4642e77b2a52aeb8bfc44d02a1ecf93
+      size: 1864614
+    - path: src/augment_data.py
+      hash: md5
+      md5: 29624f8ae9c86aaf2d59f42c21f298cf
+      size: 6084
+    outs:
+    - path: data/augmented
+      hash: md5
+      md5: 38ffb24a9d4271e2cfb292b05c48e5f2.dir
+      size: 330870688
+      nfiles: 12595
+  train_cnn_augmented:
+    cmd: python src/train.py --model cnn --config 
+      params/experiments_augmented.yaml --run-name cnn_augmented
+    deps:
+    - path: data/augmented
+      hash: md5
+      md5: 38ffb24a9d4271e2cfb292b05c48e5f2.dir
+      size: 330870688
+      nfiles: 12595
+    - path: data/processed/manifest.csv
+      hash: md5
+      md5: c4642e77b2a52aeb8bfc44d02a1ecf93
+      size: 1864614
+    - path: src/image_dataset.py
+      hash: md5
+      md5: 502264fbd6b2bb4703335021a9270a46
+      size: 5780
+    - path: src/models.py
+      hash: md5
+      md5: 514ded64ee1a30a100122ae6f5ba9d87
+      size: 3616
+    - path: src/train.py
+      hash: md5
+      md5: 6e94fb2f21c63a74a73e86eb61607f1c
+      size: 13378
+    params:
+      params/experiments_augmented.yaml:
+        data:
+          manifest: data/processed/manifest.csv
+          image_size: 224
+          batch_size: 32
+          augmentation: true
+          augmented_dir: data/augmented
+        evaluation:
+          validation_split: valid
+          test_split: test
+        models:
+          cnn:
+            enabled: true
+          mobilenetv2:
+            enabled: true
+          efficientnetb0:
+            enabled: true
+        seed: 42
+        training:
+          epochs: 10
+          learning_rate: 0.001
+          dropout: 0.3
+          early_stopping_patience: 3
+    outs:
+    - path: models/cnn_augmented/best.keras
+      hash: md5
+      md5: f290cfd2abefd772a7d3a84da21f3737
+      size: 1349903
+    - path: reports/experiments/cnn_augmented/metrics.json
+      hash: md5
+      md5: bd8d002edf95522459c947721dc535d7
+      size: 3061
+  train_mobilenetv2_augmented:
+    cmd: python src/train.py --model mobilenetv2 --config 
+      params/experiments_augmented.yaml --run-name mobilenetv2_augmented
+    deps:
+    - path: data/augmented
+      hash: md5
+      md5: 38ffb24a9d4271e2cfb292b05c48e5f2.dir
+      size: 330870688
+      nfiles: 12595
+    - path: data/processed/manifest.csv
+      hash: md5
+      md5: c4642e77b2a52aeb8bfc44d02a1ecf93
+      size: 1864614
+    - path: src/image_dataset.py
+      hash: md5
+      md5: 502264fbd6b2bb4703335021a9270a46
+      size: 5780
+    - path: src/models.py
+      hash: md5
+      md5: 514ded64ee1a30a100122ae6f5ba9d87
+      size: 3616
+    - path: src/train.py
+      hash: md5
+      md5: 6e94fb2f21c63a74a73e86eb61607f1c
+      size: 13378
+    params:
+      params/experiments_augmented.yaml:
+        data:
+          manifest: data/processed/manifest.csv
+          image_size: 224
+          batch_size: 32
+          augmentation: true
+          augmented_dir: data/augmented
+        evaluation:
+          validation_split: valid
+          test_split: test
+        models:
+          cnn:
+            enabled: true
+          mobilenetv2:
+            enabled: true
+          efficientnetb0:
+            enabled: true
+        seed: 42
+        training:
+          epochs: 10
+          learning_rate: 0.001
+          dropout: 0.3
+          early_stopping_patience: 3
+    outs:
+    - path: models/mobilenetv2_augmented/best.keras
+      hash: md5
+      md5: 7cd047f84751b6c316ec1b38763ada40
+      size: 11163357
+    - path: reports/experiments/mobilenetv2_augmented/metrics.json
+      hash: md5
+      md5: e62024abb3fd0affaed9028649409256
+      size: 3075
+  train_efficientnetb0_augmented:
+    cmd: python src/train.py --model efficientnetb0 --config 
+      params/experiments_augmented.yaml --run-name efficientnetb0_augmented
+    deps:
+    - path: data/augmented
+      hash: md5
+      md5: 38ffb24a9d4271e2cfb292b05c48e5f2.dir
+      size: 330870688
+      nfiles: 12595
+    - path: data/processed/manifest.csv
+      hash: md5
+      md5: c4642e77b2a52aeb8bfc44d02a1ecf93
+      size: 1864614
+    - path: src/image_dataset.py
+      hash: md5
+      md5: 502264fbd6b2bb4703335021a9270a46
+      size: 5780
+    - path: src/models.py
+      hash: md5
+      md5: 514ded64ee1a30a100122ae6f5ba9d87
+      size: 3616
+    - path: src/train.py
+      hash: md5
+      md5: 6e94fb2f21c63a74a73e86eb61607f1c
+      size: 13378
+    params:
+      params/experiments_augmented.yaml:
+        data:
+          manifest: data/processed/manifest.csv
+          image_size: 224
+          batch_size: 32
+          augmentation: true
+          augmented_dir: data/augmented
+        evaluation:
+          validation_split: valid
+          test_split: test
+        models:
+          cnn:
+            enabled: true
+          mobilenetv2:
+            enabled: true
+          efficientnetb0:
+            enabled: true
+        seed: 42
+        training:
+          epochs: 10
+          learning_rate: 0.001
+          dropout: 0.3
+          early_stopping_patience: 3
+    outs:
+    - path: models/efficientnetb0_augmented/best.keras
+      hash: md5
+      md5: 388067efaa6338fb8bd08eb7e6ba1859
+      size: 18587124
+    - path: reports/experiments/efficientnetb0_augmented/metrics.json
+      hash: md5
+      md5: 448789a522437bdba4591d2585e4f130
+      size: 3083
