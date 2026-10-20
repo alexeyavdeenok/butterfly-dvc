@@ -1,0 +1,27 @@
+
+seed: 42
+
+data:
+  manifest: data/processed/manifest.csv
+  image_size: 224
+  batch_size: 32
+  augmentation: true
+  augmented_dir: data/augmented
+
+training:
+  epochs: 10
+  learning_rate: 0.001
+  dropout: 0.3
+  early_stopping_patience: 3
+
+models:
+  cnn:
+    enabled: true
+  mobilenetv2:
+    enabled: true
+  efficientnetb0:
+    enabled: true
+
+evaluation:
+  validation_split: valid
+  test_split: test

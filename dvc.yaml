@@ -1,4 +1,7 @@
+
 stages:
+  # -------------------- BASELINE --------------------
+
   train_cnn:
     cmd: >-
       python src/train.py
@@ -6,22 +9,22 @@ stages:
       --config params/experiments.yaml
       --run-name cnn_baseline
     deps:
-    - src/train.py
-    - src/models.py
-    - src/image_dataset.py
-    - data/processed/manifest.csv
+      - src/train.py
+      - src/models.py
+      - src/image_dataset.py
+      - data/processed/manifest.csv
     params:
-    - params/experiments.yaml:
-      - seed
-      - data
-      - training
-      - models
-      - evaluation
+      - params/experiments.yaml:
+          - seed
+          - data
+          - training
+          - models
+          - evaluation
     outs:
-    - models/cnn_baseline/best.keras
+      - models/cnn_baseline/best.keras
     metrics:
-    - reports/experiments/cnn_baseline/metrics.json:
-        cache: false
+      - reports/experiments/cnn_baseline/metrics.json:
+          cache: false
 
   train_mobilenetv2:
     cmd: >-
@@ -30,22 +33,22 @@ stages:
       --config params/experiments.yaml
       --run-name mobilenetv2_baseline
     deps:
-    - src/train.py
-    - src/models.py
-    - src/image_dataset.py
-    - data/processed/manifest.csv
+      - src/train.py
+      - src/models.py
+      - src/image_dataset.py
+      - data/processed/manifest.csv
     params:
-    - params/experiments.yaml:
-      - seed
-      - data
-      - training
-      - models
-      - evaluation
+      - params/experiments.yaml:
+          - seed
+          - data
+          - training
+          - models
+          - evaluation
     outs:
-    - models/mobilenetv2_baseline/best.keras
+      - models/mobilenetv2_baseline/best.keras
     metrics:
-    - reports/experiments/mobilenetv2_baseline/metrics.json:
-        cache: false
+      - reports/experiments/mobilenetv2_baseline/metrics.json:
+          cache: false
 
   train_efficientnetb0:
     cmd: >-
@@ -54,34 +57,139 @@ stages:
       --config params/experiments.yaml
       --run-name efficientnetb0_baseline
     deps:
-    - src/train.py
-    - src/models.py
-    - src/image_dataset.py
-    - data/processed/manifest.csv
+      - src/train.py
+      - src/models.py
+      - src/image_dataset.py
+      - data/processed/manifest.csv
     params:
-    - params/experiments.yaml:
-      - seed
-      - data
-      - training
-      - models
-      - evaluation
+      - params/experiments.yaml:
+          - seed
+          - data
+          - training
+          - models
+          - evaluation
     outs:
-    - models/efficientnetb0_baseline/best.keras
+      - models/efficientnetb0_baseline/best.keras
     metrics:
-    - reports/experiments/efficientnetb0_baseline/metrics.json:
-        cache: false
+      - reports/experiments/efficientnetb0_baseline/metrics.json:
+          cache: false
+
+  # -------------------- AUGMENTATION --------------------
+
+  augment_data:
+    cmd: >-
+      python src/augment_data.py
+      --manifest data/processed/manifest.csv
+      --output-dir data/augmented
+    deps:
+      - src/augment_data.py
+      - data/processed/manifest.csv
+    outs:
+      - data/augmented
+
+  # -------------------- AUGMENTED EXPERIMENTS --------------------
+
+  train_cnn_augmented:
+    cmd: >-
+      python src/train.py
+      --model cnn
+      --config params/experiments_augmented.yaml
+      --run-name cnn_augmented
+    deps:
+      - src/train.py
+      - src/models.py
+      - src/image_dataset.py
+      - data/processed/manifest.csv
+      - data/augmented
+    params:
+      - params/experiments_augmented.yaml:
+          - seed
+          - data
+          - training
+          - models
+          - evaluation
+    outs:
+      - models/cnn_augmented/best.keras
+    metrics:
+      - reports/experiments/cnn_augmented/metrics.json:
+          cache: false
+
+  train_mobilenetv2_augmented:
+    cmd: >-
+      python src/train.py
+      --model mobilenetv2
+      --config params/experiments_augmented.yaml
+      --run-name mobilenetv2_augmented
+    deps:
+      - src/train.py
+      - src/models.py
+      - src/image_dataset.py
+      - data/processed/manifest.csv
+      - data/augmented
+    params:
+      - params/experiments_augmented.yaml:
+          - seed
+          - data
+          - training
+          - models
+          - evaluation
+    outs:
+      - models/mobilenetv2_augmented/best.keras
+    metrics:
+      - reports/experiments/mobilenetv2_augmented/metrics.json:
+          cache: false
+
+  train_efficientnetb0_augmented:
+    cmd: >-
+      python src/train.py
+      --model efficientnetb0
+      --config params/experiments_augmented.yaml
+      --run-name efficientnetb0_augmented
+    deps:
+      - src/train.py
+      - src/models.py
+      - src/image_dataset.py
+      - data/processed/manifest.csv
+      - data/augmented
+    params:
+      - params/experiments_augmented.yaml:
+          - seed
+          - data
+          - training
+          - models
+          - evaluation
+    outs:
+      - models/efficientnetb0_augmented/best.keras
+    metrics:
+      - reports/experiments/efficientnetb0_augmented/metrics.json:
+          cache: false
+
 params:
-- reports/experiments/cnn_baseline/dvclive/params.yaml
-- reports/experiments/mobilenetv2_baseline/dvclive/params.yaml
-- reports/experiments/efficientnetb0_baseline/dvclive/params.yaml
+  - reports/experiments/cnn_baseline/dvclive/params.yaml
+  - reports/experiments/mobilenetv2_baseline/dvclive/params.yaml
+  - reports/experiments/efficientnetb0_baseline/dvclive/params.yaml
+  - reports/experiments/cnn_augmented/dvclive/params.yaml
+  - reports/experiments/mobilenetv2_augmented/dvclive/params.yaml
+  - reports/experiments/efficientnetb0_augmented/dvclive/params.yaml
+
 metrics:
-- reports/experiments/cnn_baseline/dvclive/metrics.json
-- reports/experiments/mobilenetv2_baseline/dvclive/metrics.json
-- reports/experiments/efficientnetb0_baseline/dvclive/metrics.json
+  - reports/experiments/cnn_baseline/dvclive/metrics.json
+  - reports/experiments/mobilenetv2_baseline/dvclive/metrics.json
+  - reports/experiments/efficientnetb0_baseline/dvclive/metrics.json
+  - reports/experiments/cnn_augmented/dvclive/metrics.json
+  - reports/experiments/mobilenetv2_augmented/dvclive/metrics.json
+  - reports/experiments/efficientnetb0_augmented/dvclive/metrics.json
+
 plots:
-- reports/experiments/cnn_baseline/dvclive/plots/metrics:
-    x: step
-- reports/experiments/mobilenetv2_baseline/dvclive/plots/metrics:
-    x: step
-- reports/experiments/efficientnetb0_baseline/dvclive/plots/metrics:
-    x: step
+  - reports/experiments/cnn_baseline/dvclive/plots/metrics:
+      x: step
+  - reports/experiments/mobilenetv2_baseline/dvclive/plots/metrics:
+      x: step
+  - reports/experiments/efficientnetb0_baseline/dvclive/plots/metrics:
+      x: step
+  - reports/experiments/cnn_augmented/dvclive/plots/metrics:
+      x: step
+  - reports/experiments/mobilenetv2_augmented/dvclive/plots/metrics:
+      x: step
+  - reports/experiments/efficientnetb0_augmented/dvclive/plots/metrics:
+      x: step
