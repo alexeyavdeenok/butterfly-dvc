@@ -1,0 +1,161 @@
+schema: '2.0'
+stages:
+  train_cnn:
+    cmd: python src/train.py --model cnn --config params/experiments.yaml 
+      --run-name cnn_baseline
+    deps:
+    - path: data/processed/manifest.csv
+      hash: md5
+      md5: c4642e77b2a52aeb8bfc44d02a1ecf93
+      size: 1864614
+    - path: src/image_dataset.py
+      hash: md5
+      md5: 502264fbd6b2bb4703335021a9270a46
+      size: 5780
+    - path: src/models.py
+      hash: md5
+      md5: 514ded64ee1a30a100122ae6f5ba9d87
+      size: 3616
+    - path: src/train.py
+      hash: md5
+      md5: 6e94fb2f21c63a74a73e86eb61607f1c
+      size: 13378
+    params:
+      params/experiments.yaml:
+        data:
+          manifest: data/processed/manifest.csv
+          image_size: 224
+          batch_size: 32
+          augmentation: false
+          augmented_dir: data/augmented
+        evaluation:
+          validation_split: valid
+          test_split: test
+        models:
+          cnn:
+            enabled: true
+          mobilenetv2:
+            enabled: true
+          efficientnetb0:
+            enabled: true
+        seed: 42
+        training:
+          epochs: 10
+          learning_rate: 0.001
+          dropout: 0.3
+          early_stopping_patience: 3
+    outs:
+    - path: models/cnn_baseline/best.keras
+      hash: md5
+      md5: 2cc9518478b9ebe6013371cc99e05a11
+      size: 1349903
+    - path: reports/experiments/cnn_baseline/metrics.json
+      hash: md5
+      md5: da3aa976f74db85ec0a95a5f0d3b6740
+      size: 3046
+  train_mobilenetv2:
+    cmd: python src/train.py --model mobilenetv2 --config 
+      params/experiments.yaml --run-name mobilenetv2_baseline
+    deps:
+    - path: data/processed/manifest.csv
+      hash: md5
+      md5: c4642e77b2a52aeb8bfc44d02a1ecf93
+      size: 1864614
+    - path: src/image_dataset.py
+      hash: md5
+      md5: 502264fbd6b2bb4703335021a9270a46
+      size: 5780
+    - path: src/models.py
+      hash: md5
+      md5: 514ded64ee1a30a100122ae6f5ba9d87
+      size: 3616
+    - path: src/train.py
+      hash: md5
+      md5: 6e94fb2f21c63a74a73e86eb61607f1c
+      size: 13378
+    params:
+      params/experiments.yaml:
+        data:
+          manifest: data/processed/manifest.csv
+          image_size: 224
+          batch_size: 32
+          augmentation: false
+          augmented_dir: data/augmented
+        evaluation:
+          validation_split: valid
+          test_split: test
+        models:
+          cnn:
+            enabled: true
+          mobilenetv2:
+            enabled: true
+          efficientnetb0:
+            enabled: true
+        seed: 42
+        training:
+          epochs: 10
+          learning_rate: 0.001
+          dropout: 0.3
+          early_stopping_patience: 3
+    outs:
+    - path: models/mobilenetv2_baseline/best.keras
+      hash: md5
+      md5: 80a0a3486cd9916b56147792d9d25307
+      size: 11163357
+    - path: reports/experiments/mobilenetv2_baseline/metrics.json
+      hash: md5
+      md5: 8cecc181db848f29520ca4fd2e1dbd90
+      size: 3063
+  train_efficientnetb0:
+    cmd: python src/train.py --model efficientnetb0 --config 
+      params/experiments.yaml --run-name efficientnetb0_baseline
+    deps:
+    - path: data/processed/manifest.csv
+      hash: md5
+      md5: c4642e77b2a52aeb8bfc44d02a1ecf93
+      size: 1864614
+    - path: src/image_dataset.py
+      hash: md5
+      md5: 502264fbd6b2bb4703335021a9270a46
+      size: 5780
+    - path: src/models.py
+      hash: md5
+      md5: 514ded64ee1a30a100122ae6f5ba9d87
+      size: 3616
+    - path: src/train.py
+      hash: md5
+      md5: 6e94fb2f21c63a74a73e86eb61607f1c
+      size: 13378
+    params:
+      params/experiments.yaml:
+        data:
+          manifest: data/processed/manifest.csv
+          image_size: 224
+          batch_size: 32
+          augmentation: false
+          augmented_dir: data/augmented
+        evaluation:
+          validation_split: valid
+          test_split: test
+        models:
+          cnn:
+            enabled: true
+          mobilenetv2:
+            enabled: true
+          efficientnetb0:
+            enabled: true
+        seed: 42
+        training:
+          epochs: 10
+          learning_rate: 0.001
+          dropout: 0.3
+          early_stopping_patience: 3
+    outs:
+    - path: models/efficientnetb0_baseline/best.keras
+      hash: md5
+      md5: f26c71257a24f37c592f185fbc674a4c
+      size: 18587124
+    - path: reports/experiments/efficientnetb0_baseline/metrics.json
+      hash: md5
+      md5: 5e28affa0f7ceb88891cc7b0c026b5ae
+      size: 3069

@@ -1,4 +1,3 @@
-
 stages:
   train_cnn:
     cmd: >-
@@ -7,17 +6,22 @@ stages:
       --config params/experiments.yaml
       --run-name cnn_baseline
     deps:
-      - src/train.py
-      - src/models.py
-      - src/image_dataset.py
-      - data/processed/manifest.csv
+    - src/train.py
+    - src/models.py
+    - src/image_dataset.py
+    - data/processed/manifest.csv
     params:
-      - params/experiments.yaml
+    - params/experiments.yaml:
+      - seed
+      - data
+      - training
+      - models
+      - evaluation
     outs:
-      - models/cnn_baseline/best.keras
+    - models/cnn_baseline/best.keras
     metrics:
-      - reports/experiments/cnn_baseline/metrics.json:
-          cache: false
+    - reports/experiments/cnn_baseline/metrics.json:
+        cache: false
 
   train_mobilenetv2:
     cmd: >-
@@ -26,17 +30,22 @@ stages:
       --config params/experiments.yaml
       --run-name mobilenetv2_baseline
     deps:
-      - src/train.py
-      - src/models.py
-      - src/image_dataset.py
-      - data/processed/manifest.csv
+    - src/train.py
+    - src/models.py
+    - src/image_dataset.py
+    - data/processed/manifest.csv
     params:
-      - params/experiments.yaml
+    - params/experiments.yaml:
+      - seed
+      - data
+      - training
+      - models
+      - evaluation
     outs:
-      - models/mobilenetv2_baseline/best.keras
+    - models/mobilenetv2_baseline/best.keras
     metrics:
-      - reports/experiments/mobilenetv2_baseline/metrics.json:
-          cache: false
+    - reports/experiments/mobilenetv2_baseline/metrics.json:
+        cache: false
 
   train_efficientnetb0:
     cmd: >-
@@ -45,14 +54,34 @@ stages:
       --config params/experiments.yaml
       --run-name efficientnetb0_baseline
     deps:
-      - src/train.py
-      - src/models.py
-      - src/image_dataset.py
-      - data/processed/manifest.csv
+    - src/train.py
+    - src/models.py
+    - src/image_dataset.py
+    - data/processed/manifest.csv
     params:
-      - params/experiments.yaml
+    - params/experiments.yaml:
+      - seed
+      - data
+      - training
+      - models
+      - evaluation
     outs:
-      - models/efficientnetb0_baseline/best.keras
+    - models/efficientnetb0_baseline/best.keras
     metrics:
-      - reports/experiments/efficientnetb0_baseline/metrics.json:
-          cache: false
+    - reports/experiments/efficientnetb0_baseline/metrics.json:
+        cache: false
+params:
+- reports/experiments/cnn_baseline/dvclive/params.yaml
+- reports/experiments/mobilenetv2_baseline/dvclive/params.yaml
+- reports/experiments/efficientnetb0_baseline/dvclive/params.yaml
+metrics:
+- reports/experiments/cnn_baseline/dvclive/metrics.json
+- reports/experiments/mobilenetv2_baseline/dvclive/metrics.json
+- reports/experiments/efficientnetb0_baseline/dvclive/metrics.json
+plots:
+- reports/experiments/cnn_baseline/dvclive/plots/metrics:
+    x: step
+- reports/experiments/mobilenetv2_baseline/dvclive/plots/metrics:
+    x: step
+- reports/experiments/efficientnetb0_baseline/dvclive/plots/metrics:
+    x: step
